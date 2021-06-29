@@ -21,10 +21,13 @@ def generatejpg(mp4):
    if os.path.exists(jpg): os.remove(mp4)
 
 def generatepng(file):   
+   hlsfile = file.replace('.mp4','.m3u8')
+   segfile = file.replace('.mp4','_%03d.ts')
+   try:
+      subprocess.check_output(['ffmpeg3', '-hide_banner', '-y', '-i', file, '-profile:v', 'baseline', '-s', '640x360', '-level', '3.0', '-start_number', '0', '-hls_time', '5', '-hls_list_size', '0', '-hls_segment_filename', segfile, '-f', 'hls', hlsfile])
 
-   /*** shoot me an email ***/
-
-   pass
+   except:
+      print('error generating hls %s' % file)
 
 def main():
    file = os.path.abspath(__file__)
